@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Toolbar } from '@/components/canvas/Toolbar';
-import { WorkflowNodeComponent } from '@/components/canvas/WorkflowNode';
-import { ConnectionLines } from '@/components/canvas/ConnectionLines';
+import { WorkflowNodeComponent, NODE_WIDTH } from '@/components/canvas/WorkflowNode';
+import { ConnectionLines, getOutputPoint, getInputPoint } from '@/components/canvas/ConnectionLines';
 import type { WorkflowNode, Connection, NodeType } from '@/components/canvas/types';
 import { NODE_TYPE_CONFIG } from '@/components/canvas/types';
 import { Bookmark } from 'lucide-react';
@@ -10,11 +10,31 @@ import { Bookmark } from 'lucide-react';
 let nodeIdCounter = 0;
 const makeId = () => `node-${++nodeIdCounter}`;
 
+interface DragState {
+  fromNodeId: string;
+  fromSide: 'left' | 'right';
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+}
+
+function getHandlePosition(node: WorkflowNode, side: 'left' | 'right') {
+  if (side === 'right') return getOutputPoint(node);
+  return getInputPoint(node);
+}
+
+const HANDLE_HIT_RADIUS = 24;
+
 const Index = () => {
   const [nodes, setNodes] = useState<WorkflowNode[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+  const [dragState, setDragState] = useState<DragState | null>(null);
+  const [dropTarget, setDropTarget] = useState<{ nodeId: string; side: 'left' | 'right' } | null>(null);
+  const [hoveredConnection, setHoveredConnection] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   const addNode = useCallback((type: NodeType, x?: number, y?: number) => {
     const config = NODE_TYPE_CONFIG[type];
@@ -29,16 +49,7 @@ const Index = () => {
       model: type === 'text' ? 'GPT-5.2' : type === 'image' ? 'GPT-Image 1.5' : type === 'video' ? 'Runway Gen-4' : undefined,
     };
 
-    setNodes(prev => {
-      const updated = [...prev, newNode];
-      // Auto-connect to last node
-      if (prev.length > 0) {
-        const lastNode = prev[prev.length - 1];
-        setConnections(c => [...c, { id: `conn-${lastNode.id}-${id}`, from: lastNode.id, to: id }]);
-      }
-      return updated;
-    });
-
+    setNodes(prev => [...prev, newNode]);
     setContextMenu(null);
   }, [nodes.length]);
 
@@ -50,28 +61,136 @@ const Index = () => {
     setNodes(prev => prev.map(n => n.id === id ? { ...n, ...updates } : n));
   }, []);
 
+  const deleteConnection = useCallback((connId: string) => {
+    setConnections(prev => prev.filter(c => c.id !== connId));
+    setHoveredConnection(null);
+  }, []);
+
+  // ---- Handle drag-to-connect ----
+  const handleHandleDragStart = useCallback((nodeId: string, side: 'left' | 'right', e: React.MouseEvent) => {
+    const node = nodes.find(n => n.id === nodeId);
+    if (!node) return;
+
+    const pos = getHandlePosition(node, side);
+    setDragState({
+      fromNodeId: nodeId,
+      fromSide: side,
+      startX: pos.x,
+      startY: pos.y,
+      endX: pos.x,
+      endY: pos.y,
+    });
+  }, [nodes]);
+
+  // Find closest handle to cursor
+  const findDropTarget = useCallback((cursorX: number, cursorY: number, fromNodeId: string): { nodeId: string; side: 'left' | 'right' } | null => {
+    let best: { nodeId: string; side: 'left' | 'right'; dist: number } | null = null;
+
+    for (const node of nodes) {
+      if (node.id === fromNodeId) continue;
+      for (const side of ['left', 'right'] as const) {
+        const pos = getHandlePosition(node, side);
+        const dist = Math.hypot(cursorX - pos.x, cursorY - pos.y);
+        if (dist < HANDLE_HIT_RADIUS && (!best || dist < best.dist)) {
+          best = { nodeId: node.id, side, dist };
+        }
+      }
+    }
+    return best ? { nodeId: best.nodeId, side: best.side } : null;
+  }, [nodes]);
+
+  useEffect(() => {
+    if (!dragState) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Update the dragging line from the current handle position (node may have moved)
+      const node = nodes.find(n => n.id === dragState.fromNodeId);
+      if (node) {
+        const pos = getHandlePosition(node, dragState.fromSide);
+        setDragState(prev => prev ? { ...prev, startX: pos.x, startY: pos.y, endX: x, endY: y } : null);
+      } else {
+        setDragState(prev => prev ? { ...prev, endX: x, endY: y } : null);
+      }
+
+      const target = findDropTarget(x, y, dragState.fromNodeId);
+      setDropTarget(target);
+    };
+
+    const handleMouseUp = (e: MouseEvent) => {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) { setDragState(null); setDropTarget(null); return; }
+
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const target = findDropTarget(x, y, dragState.fromNodeId);
+
+      if (target) {
+        // Determine from/to: right→left is natural (output→input)
+        let fromId = dragState.fromNodeId;
+        let toId = target.nodeId;
+
+        // If dragging from left handle to right handle, reverse
+        if (dragState.fromSide === 'left' && target.side === 'right') {
+          fromId = target.nodeId;
+          toId = dragState.fromNodeId;
+        }
+
+        // Check no duplicate
+        const exists = connections.some(c => c.from === fromId && c.to === toId);
+        // Check no self-connection
+        if (fromId !== toId && !exists) {
+          const connId = `conn-${fromId}-${toId}-${Date.now()}`;
+          setConnections(prev => [...prev, { id: connId, from: fromId, to: toId }]);
+        }
+      } else {
+        // Dropped on empty canvas — show context menu to create & connect
+        setContextMenu({ x, y });
+      }
+
+      setDragState(null);
+      setDropTarget(null);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [dragState, nodes, connections, findDropTarget]);
+
   const handleCanvasClick = useCallback((e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest('[data-node]')) return;
+    if ((e.target as HTMLElement).closest('[data-node-id]')) return;
     setSelectedNode(null);
     setContextMenu(null);
   }, []);
 
   const handleCanvasDoubleClick = useCallback((e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('[data-node-id]')) return;
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     setContextMenu({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   }, []);
+
+  const draggingLine = dragState ? {
+    startX: dragState.startX,
+    startY: dragState.startY,
+    endX: dragState.endX,
+    endY: dragState.endY,
+  } : null;
 
   const hasNodes = nodes.length > 0;
 
   return (
     <div className="w-screen h-screen overflow-hidden canvas-bg relative">
-      {/* Canvas grid */}
       <div className="absolute inset-0 canvas-grid" />
 
-      {/* Toolbar */}
       <Toolbar onAddNode={(type) => addNode(type)} />
 
-      {/* Top-right badge */}
       <motion.div
         className="fixed top-5 right-5 z-50 flex items-center gap-2 bg-[hsl(var(--node-bg))] border border-border/40 rounded-full px-4 py-2 text-xs text-muted-foreground"
         initial={{ y: -20, opacity: 0 }}
@@ -82,13 +201,12 @@ const Index = () => {
         <span>Workflow saved to Brand DNA</span>
       </motion.div>
 
-      {/* Canvas area */}
       <div
-        className="absolute inset-0"
+        ref={canvasRef}
+        className={`absolute inset-0 ${dragState ? 'cursor-crosshair' : ''}`}
         onClick={handleCanvasClick}
         onDoubleClick={handleCanvasDoubleClick}
       >
-        {/* Center placeholder */}
         <AnimatePresence>
           {!hasNodes && (
             <motion.div
@@ -106,10 +224,15 @@ const Index = () => {
           )}
         </AnimatePresence>
 
-        {/* Connections */}
-        <ConnectionLines nodes={nodes} connections={connections} />
+        <ConnectionLines
+          nodes={nodes}
+          connections={connections}
+          draggingLine={draggingLine}
+          onDeleteConnection={deleteConnection}
+          hoveredConnection={hoveredConnection}
+          onHoverConnection={setHoveredConnection}
+        />
 
-        {/* Nodes */}
         {nodes.map(node => (
           <div key={node.id} data-node>
             <WorkflowNodeComponent
@@ -118,11 +241,13 @@ const Index = () => {
               onSelect={setSelectedNode}
               onMove={moveNode}
               onUpdateNode={updateNode}
+              onHandleDragStart={handleHandleDragStart}
+              isDropTarget={dropTarget?.nodeId === node.id}
+              dropSide={dropTarget?.nodeId === node.id ? dropTarget.side : null}
             />
           </div>
         ))}
 
-        {/* Context menu on double-click */}
         <AnimatePresence>
           {contextMenu && (
             <motion.div
@@ -152,7 +277,6 @@ const Index = () => {
         </AnimatePresence>
       </div>
 
-      {/* Bottom-right queue indicator */}
       <motion.div
         className="fixed bottom-5 right-5 z-50 flex items-center gap-3 bg-[hsl(var(--node-bg))] border border-border/40 rounded-full px-4 py-2 text-xs text-muted-foreground"
         initial={{ y: 20, opacity: 0 }}
@@ -164,7 +288,6 @@ const Index = () => {
         <span className="text-foreground/40">›</span>
       </motion.div>
 
-      {/* Top-left branding */}
       <motion.div
         className="fixed top-5 left-20 z-50 flex items-center gap-3"
         initial={{ opacity: 0 }}
