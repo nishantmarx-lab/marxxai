@@ -140,7 +140,8 @@
   "status": {
     "script": "approved",
     "refs": "approved: refs/nishant.png, refs/maya.png, refs/set.png",
-    "voices": "done; all lines fit shot timings, total 32s unchanged"
+    "voices": "done; all lines fit shot timings, total 32s unchanged",
+    "animation": "manual: awaiting shots/s01..s08.mp4 (prompts in SHOT_PROMPTS.md)"
   },
   "style_bible": {
     "render": "3D animated film still, Pixar-style stylised characters, cinematic, high-detail subsurface skin, soft global illumination",
