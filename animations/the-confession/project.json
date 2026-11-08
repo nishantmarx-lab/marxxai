@@ -27,7 +27,9 @@
         }
       ],
       "mouth": "off-face",
-      "text": "Last week. 11:47 PM."
+      "text": "Last week. 11:47 PM.",
+      "audio": "audio/s01_nishant.mp3",
+      "audio_dur": 2.53
     },
     {
       "n": 2,
@@ -41,7 +43,9 @@
         }
       ],
       "mouth": "off-face",
-      "text": null
+      "text": null,
+      "audio": "audio/s02_maya.mp3",
+      "audio_dur": 2.35
     },
     {
       "n": 3,
@@ -55,7 +59,9 @@
         }
       ],
       "mouth": "face-on",
-      "text": null
+      "text": null,
+      "audio": "audio/s03_nishant.mp3",
+      "audio_dur": 3.47
     },
     {
       "n": 4,
@@ -69,7 +75,9 @@
         }
       ],
       "mouth": "off-face",
-      "text": null
+      "text": null,
+      "audio": "audio/s04_nishant.mp3",
+      "audio_dur": 1.28
     },
     {
       "n": 5,
@@ -83,7 +91,9 @@
         }
       ],
       "mouth": "off-face",
-      "text": "47 prompts. 12 clients."
+      "text": "47 prompts. 12 clients.",
+      "audio": "audio/s05_nishant.mp3",
+      "audio_dur": 2.32
     },
     {
       "n": 6,
@@ -97,7 +107,9 @@
         }
       ],
       "mouth": "off-face",
-      "text": null
+      "text": null,
+      "audio": "audio/s06_maya.mp3",
+      "audio_dur": 1.49
     },
     {
       "n": 7,
@@ -111,7 +123,9 @@
         }
       ],
       "mouth": "off-face",
-      "text": null
+      "text": null,
+      "audio": "audio/s07_nishant.mp3",
+      "audio_dur": 0.73
     },
     {
       "n": 8,
@@ -125,7 +139,8 @@
   ],
   "status": {
     "script": "approved",
-    "refs": "approved: refs/nishant.png, refs/maya.png, refs/set.png"
+    "refs": "approved: refs/nishant.png, refs/maya.png, refs/set.png",
+    "voices": "done; all lines fit shot timings, total 32s unchanged"
   },
   "style_bible": {
     "render": "3D animated film still, Pixar-style stylised characters, cinematic, high-detail subsurface skin, soft global illumination",
@@ -137,5 +152,23 @@
     "note": "refs contain a small sparkle watermark bottom-right; crop/avoid in keyframes"
   },
   "notes": [],
-  "spend": []
+  "spend": [
+    {
+      "stage": "voices",
+      "provider": "elevenlabs",
+      "note": "~6 samples + 7 lines, ~550 characters"
+    }
+  ],
+  "voices": {
+    "Nishant": {
+      "provider": "elevenlabs",
+      "id": "GgVe95NYpJD9JDAl1QHe",
+      "name": "Dev"
+    },
+    "Maya": {
+      "provider": "elevenlabs",
+      "id": "JSZ6mrlwqYAjKBo9OVaS",
+      "name": "AB"
+    }
+  }
 }
