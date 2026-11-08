@@ -1,23 +1,140 @@
 {
   "title": "The Confession",
-  "format": {"aspect": "9:16", "target_seconds": 32, "language": "en", "mode": "lean", "tone": "dramatic/confessional", "brand": null},
+  "format": {
+    "aspect": "9:16",
+    "target_seconds": 32,
+    "language": "en",
+    "mode": "lean",
+    "tone": "dramatic/confessional",
+    "brand": null
+  },
   "characters": {
     "Nishant": "agency owner, late 30s, tired and guilty",
     "Maya": "business partner, sharp, unimpressed"
   },
   "setting": "agency office at night, lit by laptop screen, rain on window",
   "shots": [
-    {"n":1,"dur":3,"type":"close-up","action":"Nishant's face lit blue by laptop, slowly closes it","lines":[{"who":"Nishant","text":"I've been lying to every client.","vo":true}],"mouth":"off-face","text":"Last week. 11:47 PM."},
-    {"n":2,"dur":3,"type":"wide","action":"Maya enters, switches on desk lamp","lines":[{"who":"Maya","text":"Nishant... why are you still here?"}],"mouth":"off-face","text":null},
-    {"n":3,"dur":5,"type":"medium","action":"Nishant slides folder marked CONFIDENTIAL across desk","lines":[{"who":"Nishant","text":"Every campaign that worked. Every 'genius' idea..."}],"mouth":"face-on","text":null},
-    {"n":4,"dur":3,"type":"reaction close-up","action":"Maya opens folder, eyes widen","lines":[{"who":"Nishant","text":"...it wasn't me."}],"mouth":"off-face","text":null},
-    {"n":5,"dur":4,"type":"insert close-up","action":"Pages flip: prompts labelled Client A, B, C","lines":[{"who":"Nishant","text":"It was Claude. These are the prompts."}],"mouth":"off-face","text":"47 prompts. 12 clients."},
-    {"n":6,"dur":4,"type":"medium two-shot","action":"Maya pulls her own folder from bag, starts opening it","lines":[{"who":"Maya","text":"Then you should see mine..."}],"mouth":"off-face","text":null},
-    {"n":7,"dur":4,"type":"close-up hands","action":"Nishant's hand slams her folder shut, thunder","lines":[{"who":"Nishant","text":"Don't."}],"mouth":"off-face","text":null},
-    {"n":8,"dur":6,"type":"slow push-in two-shot","action":"Locked eyes, lamp flickers, rain intensifies, cut to black","lines":[],"mouth":"none","text":"Some prompts should never be shown."}
+    {
+      "n": 1,
+      "dur": 3,
+      "type": "close-up",
+      "action": "Nishant's face lit blue by laptop, slowly closes it",
+      "lines": [
+        {
+          "who": "Nishant",
+          "text": "I've been lying to every client.",
+          "vo": true
+        }
+      ],
+      "mouth": "off-face",
+      "text": "Last week. 11:47 PM."
+    },
+    {
+      "n": 2,
+      "dur": 3,
+      "type": "wide",
+      "action": "Maya enters, switches on desk lamp",
+      "lines": [
+        {
+          "who": "Maya",
+          "text": "Nishant... why are you still here?"
+        }
+      ],
+      "mouth": "off-face",
+      "text": null
+    },
+    {
+      "n": 3,
+      "dur": 5,
+      "type": "medium",
+      "action": "Nishant slides folder marked CONFIDENTIAL across desk",
+      "lines": [
+        {
+          "who": "Nishant",
+          "text": "Every campaign that worked. Every 'genius' idea..."
+        }
+      ],
+      "mouth": "face-on",
+      "text": null
+    },
+    {
+      "n": 4,
+      "dur": 3,
+      "type": "reaction close-up",
+      "action": "Maya opens folder, eyes widen",
+      "lines": [
+        {
+          "who": "Nishant",
+          "text": "...it wasn't me."
+        }
+      ],
+      "mouth": "off-face",
+      "text": null
+    },
+    {
+      "n": 5,
+      "dur": 4,
+      "type": "insert close-up",
+      "action": "Pages flip: prompts labelled Client A, B, C",
+      "lines": [
+        {
+          "who": "Nishant",
+          "text": "It was Claude. These are the prompts."
+        }
+      ],
+      "mouth": "off-face",
+      "text": "47 prompts. 12 clients."
+    },
+    {
+      "n": 6,
+      "dur": 4,
+      "type": "medium two-shot",
+      "action": "Maya pulls her own folder from bag, starts opening it",
+      "lines": [
+        {
+          "who": "Maya",
+          "text": "Then you should see mine..."
+        }
+      ],
+      "mouth": "off-face",
+      "text": null
+    },
+    {
+      "n": 7,
+      "dur": 4,
+      "type": "close-up hands",
+      "action": "Nishant's hand slams her folder shut, thunder",
+      "lines": [
+        {
+          "who": "Nishant",
+          "text": "Don't."
+        }
+      ],
+      "mouth": "off-face",
+      "text": null
+    },
+    {
+      "n": 8,
+      "dur": 6,
+      "type": "slow push-in two-shot",
+      "action": "Locked eyes, lamp flickers, rain intensifies, cut to black",
+      "lines": [],
+      "mouth": "none",
+      "text": "Some prompts should never be shown."
+    }
   ],
-  "status": {"script":"approved"},
-  "style_bible": null,
+  "status": {
+    "script": "approved",
+    "refs": "awaiting manual upload: refs/nishant.png, refs/maya.png, refs/set.png"
+  },
+  "style_bible": {
+    "render": "3D animated film still, Pixar-style stylised characters, cinematic, high-detail subsurface skin, soft global illumination",
+    "palette": "deep teal-blue shadows, cold laptop-blue key light, warm amber desk-lamp accent, desaturated background",
+    "lens": "35mm cinematic, shallow depth of field, subtle film grain",
+    "Nishant": "Indian man, late 30s, short slightly messy black hair, light stubble, dark tired eyes with faint bags, rolled-up navy-blue shirt sleeves over a white t-shirt, black smartwatch on left wrist, slim build",
+    "Maya": "Indian woman, mid 30s, sleek shoulder-length black hair tucked behind one ear, sharp eyebrows, small gold stud earrings, charcoal-grey blazer over a black turtleneck, carries a tan leather tote bag",
+    "set": "small modern agency office at night: dark wooden desk with an open silver laptop, brass desk lamp (off), leather office chair, large rain-streaked window behind with blurred city lights, shelf with awards and plants in shadow, papers on desk"
+  },
   "notes": [],
   "spend": []
 }
