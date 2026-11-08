@@ -125,15 +125,16 @@
   ],
   "status": {
     "script": "approved",
-    "refs": "awaiting manual upload: refs/nishant.png, refs/maya.png, refs/set.png"
+    "refs": "approved: refs/nishant.png, refs/maya.png, refs/set.png"
   },
   "style_bible": {
     "render": "3D animated film still, Pixar-style stylised characters, cinematic, high-detail subsurface skin, soft global illumination",
     "palette": "deep teal-blue shadows, cold laptop-blue key light, warm amber desk-lamp accent, desaturated background",
     "lens": "35mm cinematic, shallow depth of field, subtle film grain",
-    "Nishant": "Indian man, late 30s, short slightly messy black hair, light stubble, dark tired eyes with faint bags, rolled-up navy-blue shirt sleeves over a white t-shirt, black smartwatch on left wrist, slim build",
-    "Maya": "Indian woman, mid 30s, sleek shoulder-length black hair tucked behind one ear, sharp eyebrows, small gold stud earrings, charcoal-grey blazer over a black turtleneck, carries a tan leather tote bag",
-    "set": "small modern agency office at night: dark wooden desk with an open silver laptop, brass desk lamp (off), leather office chair, large rain-streaked window behind with blurred city lights, shelf with awards and plants in shadow, papers on desk"
+    "Nishant": "Indian man, late 30s, short slightly messy black hair, light stubble, dark tired eyes with faint bags, open navy-blue button-up shirt with rolled-up sleeves worn over a white t-shirt, dark charcoal trousers, brown leather sneakers, black smartwatch on left wrist, thin brown bracelet on right wrist, slim build",
+    "Maya": "Indian woman, mid 30s, sleek straight shoulder-length black hair, sharp thick eyebrows, small gold stud earrings, charcoal-grey blazer over a black turtleneck, black tailored trousers, black loafers, carries a tan leather tote bag",
+    "set": "small modern agency office at night: dark wooden desk with an open silver laptop, brass desk lamp (off), leather office chair, large rain-streaked window behind with blurred city lights, shelf with awards and plants in shadow, papers on desk",
+    "note": "refs contain a small sparkle watermark bottom-right; crop/avoid in keyframes"
   },
   "notes": [],
   "spend": []
