@@ -1,0 +1,23 @@
+{
+  "title": "The Confession",
+  "format": {"aspect": "9:16", "target_seconds": 32, "language": "en", "mode": "lean", "tone": "dramatic/confessional", "brand": null},
+  "characters": {
+    "Nishant": "agency owner, late 30s, tired and guilty",
+    "Maya": "business partner, sharp, unimpressed"
+  },
+  "setting": "agency office at night, lit by laptop screen, rain on window",
+  "shots": [
+    {"n":1,"dur":3,"type":"close-up","action":"Nishant's face lit blue by laptop, slowly closes it","lines":[{"who":"Nishant","text":"I've been lying to every client.","vo":true}],"mouth":"off-face","text":"Last week. 11:47 PM."},
+    {"n":2,"dur":3,"type":"wide","action":"Maya enters, switches on desk lamp","lines":[{"who":"Maya","text":"Nishant... why are you still here?"}],"mouth":"off-face","text":null},
+    {"n":3,"dur":5,"type":"medium","action":"Nishant slides folder marked CONFIDENTIAL across desk","lines":[{"who":"Nishant","text":"Every campaign that worked. Every 'genius' idea..."}],"mouth":"face-on","text":null},
+    {"n":4,"dur":3,"type":"reaction close-up","action":"Maya opens folder, eyes widen","lines":[{"who":"Nishant","text":"...it wasn't me."}],"mouth":"off-face","text":null},
+    {"n":5,"dur":4,"type":"insert close-up","action":"Pages flip: prompts labelled Client A, B, C","lines":[{"who":"Nishant","text":"It was Claude. These are the prompts."}],"mouth":"off-face","text":"47 prompts. 12 clients."},
+    {"n":6,"dur":4,"type":"medium two-shot","action":"Maya pulls her own folder from bag, starts opening it","lines":[{"who":"Maya","text":"Then you should see mine..."}],"mouth":"off-face","text":null},
+    {"n":7,"dur":4,"type":"close-up hands","action":"Nishant's hand slams her folder shut, thunder","lines":[{"who":"Nishant","text":"Don't."}],"mouth":"off-face","text":null},
+    {"n":8,"dur":6,"type":"slow push-in two-shot","action":"Locked eyes, lamp flickers, rain intensifies, cut to black","lines":[],"mouth":"none","text":"Some prompts should never be shown."}
+  ],
+  "status": {"script":"approved"},
+  "style_bible": null,
+  "notes": [],
+  "spend": []
+}
