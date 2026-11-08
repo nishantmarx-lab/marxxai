@@ -134,7 +134,8 @@
       "action": "Locked eyes, lamp flickers, rain intensifies, cut to black",
       "lines": [],
       "mouth": "none",
-      "text": "Some prompts should never be shown."
+      "text": "Some prompts should never be shown.",
+      "fade_out": 1.5
     }
   ],
   "status": {
@@ -171,5 +172,28 @@
       "id": "JSZ6mrlwqYAjKBo9OVaS",
       "name": "AB"
     }
+  },
+  "slug": "the-confession",
+  "watermark_box": [
+    566,
+    1126,
+    68,
+    68
+  ],
+  "sfx": [
+    {
+      "file": "music/sfx_rain.mp3",
+      "at": 0,
+      "vol": 0.25
+    },
+    {
+      "file": "music/sfx_thunder.mp3",
+      "at": 23.2,
+      "vol": 0.9
+    }
+  ],
+  "music": {
+    "provider": "elevenlabs-music",
+    "file": "music/score.mp3"
   }
 }
